@@ -24,23 +24,36 @@ public class Biglietto {
         this.age = age;
         isValidKm(km);
         this.km = km;
+
     }
-public void calcolaPrezzo(){
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public BigDecimal calcolaPrezzo() {
         final double costoKm = 0.21;
- BigDecimal prezzoBase = new BigDecimal(costoKm);
- BigDecimal prezzoFinale = prezzoBase.multiply(BigDecimal.valueOf(km));
- calcolaSconto(prezzoFinale);
+        BigDecimal prezzoBase = new BigDecimal(costoKm);
+        BigDecimal prezzoFinale = prezzoBase.multiply(BigDecimal.valueOf(km));
+        prezzoFinale = calcolaSconto(prezzoFinale);
+
+        return prezzoFinale;
     }
 
-private void calcolaSconto(BigDecimal prezzoFinale){
+    public BigDecimal calcolaSconto(BigDecimal prezzoFinale) {
+        final BigDecimal scontoOver65 = new BigDecimal(0.40);
+        final BigDecimal scontoMinorenni = new BigDecimal(0.20);
 
-        if (age > 65){
-            BigDecimal sconto = new BigDecimal(0.40);
-            prezzoFinale.subtract(sconto.multiply(prezzoFinale));
-        } else if(age < 18){
-            BigDecimal sconto = new BigDecimal(0.20);
-            prezzoFinale.subtract(sconto.multiply(prezzoFinale));
-        }
+        if(age > 65){
+            prezzoFinale = prezzoFinale.multiply(BigDecimal.ONE.subtract(scontoOver65));}
+else if(age < 18){
+    prezzoFinale = prezzoFinale.multiply(BigDecimal.ONE.subtract(scontoMinorenni));
+}
+return prezzoFinale;
 }
 
 
@@ -59,5 +72,13 @@ private void calcolaSconto(BigDecimal prezzoFinale){
         if (km < 0) {
             throw new RuntimeException();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Biglietto = " +
+                "Età del passeggero =" + age +
+                ", Km da percorrere" + km + calcolaPrezzo();
+
     }
 }

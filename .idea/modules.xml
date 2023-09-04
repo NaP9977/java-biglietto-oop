@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Biglietto del treno OOP.iml" filepath="$PROJECT_DIR$/Biglietto del treno OOP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java-biglietto-oop.iml" filepath="$PROJECT_DIR$/java-biglietto-oop.iml" />
     </modules>
   </component>
 </project>

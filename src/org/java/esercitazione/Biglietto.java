@@ -1,6 +1,7 @@
 package org.java.esercitazione;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 //MILESTONE 1
 //Consegna: creare una classe Biglietto con due attributi interi:
@@ -15,16 +16,35 @@ import java.math.BigDecimal;
 // eventuale sconto (calcolaPrezzo). Per eseguire il calcolo dello sconto aggiungere un
 // metodo private calcolaSconto,
 // da chiamare dentro al metodo calcolaPrezzo.
+
+//MILESTONE 3 (BONUS)
+//Alla classe Biglietto aggiungere i seguenti attributi:
+//● data: LocalDate
+//● flessibile: boolean
+//Entrambi gli attributi vanno valorizzati nel costruttore.
+//Aggiungere due costanti:
+//● durata normale: 30 giorni (int)
+//● durata flessibile: 90 giorni (int)
+//Aggiungere un metodo (calcolaDataScadenza: LocalDate) che calcola la data di
+// scadenza del biglietto, applicando la durata normale o flessibile in base al
+// parametro flessibile(boolean). Nel metodo che calcola il prezzo,
+// se il biglietto è flessibile, maggiorare il prezzo del 10%.
+//Modificare la classe Biglietteria in modo che, alla creazione del Biglietto,
+// valorizzi la data con la data odierna e il parametro flessibile in base alla
+// scelta dell’utente. Dopo aver stampato il prezzo del biglietto, stampare a video
+// anche la data di scadenza.
 public class Biglietto {
     private int age;
     private int km;
-
-    public Biglietto(int age, int km) {
+    private LocalDate date;
+    private boolean isItFlexible;
+    public Biglietto(int age, int km, boolean isItFlexible) {
         isValidAge(age);
         this.age = age;
         isValidKm(km);
         this.km = km;
-
+      this.date = date;
+      this.isItFlexible = isItFlexible;
     }
 
     public int getAge() {
@@ -35,11 +55,31 @@ public class Biglietto {
         this.age = age;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public boolean isItFlexible() {
+        return isItFlexible;
+    }
+
+    public void setItFlexible(boolean itFlexible) {
+        isItFlexible = itFlexible;
+    }
+
     public BigDecimal calcolaPrezzo() {
         final double costoKm = 0.21;
         BigDecimal prezzoBase = new BigDecimal(costoKm);
         BigDecimal prezzoFinale = prezzoBase.multiply(BigDecimal.valueOf(km));
         prezzoFinale = calcolaSconto(prezzoFinale);
+        final BigDecimal aumento = new BigDecimal(0.10);
+        if(isItFlexible){
+            prezzoFinale = prezzoFinale.add(aumento.multiply(prezzoFinale));
+        }
 
         return prezzoFinale;
     }
@@ -53,10 +93,19 @@ public class Biglietto {
 else if(age < 18){
     prezzoFinale = prezzoFinale.multiply(BigDecimal.ONE.subtract(scontoMinorenni));
 }
+
 return prezzoFinale;
 }
 
+public LocalDate calcolaDataDiScadenza(){
+        final int durataNormale = 30;
+        final int durataFlessibile = 90;
+      if(isItFlexible){
+          return date.plusDays(durataFlessibile);
+      }
+      return date.plusDays(durataNormale);
 
+}
 
 
 
